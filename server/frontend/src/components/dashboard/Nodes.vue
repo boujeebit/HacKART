@@ -42,7 +42,7 @@ export default {
           }
         }
       `,
-      pollInterval: 5000
+      // pollInterval: 5000
     } 
   },
 
