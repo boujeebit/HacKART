@@ -1,5 +1,9 @@
 # HacKART
 
+> **Warning** 
+>
+>**Users of this software assume all liability**. Code in this repository enables hardware to pop balloons in a manor that could cause physical or enviromental harm. The author and its contributors are not responsible for any damages as a result. 
+
 HacKART is a Mario Kart inspired CTF hacking challenge where NodeMCUs are used to pop balloons when a challenge is sovled. The NodeMCU client is written using MicroPython firmware on a NodeMCU with a ESP8266 chipset and 1MB of memory. In future iterations testing will also be done on ESP32 chipset.
 
 Since the NodeMCU's are flashed with MicroPython firmware the client is written in Python. The client uses MQTT messages for its command and control path making it very lightweight. The client supports both AWS IoT and Mosquitto as brokers. If you use AWS IoT (recommended) you will need a certificate for authentication. It is extremely import those certificates are in binary format (more on this later in the setup guide). The NodeMCU will both subscribe and publish to topics. 
