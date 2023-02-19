@@ -1,0 +1,4 @@
+# Ignore the certificate folder so not keys accidentally get pushed.
+node/certs/*
+# Allow the readme documentation to get pushed.
+!node/certs/README.md
