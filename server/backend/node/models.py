@@ -23,7 +23,6 @@ class Network(models.Model):
 # Used for Heartbeat Proxy
 class Heartbeat(models.Model):
     key = models.UUIDField(default=uuid.uuid4, editable=False)
-    # ip 
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.key

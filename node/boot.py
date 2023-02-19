@@ -1,6 +1,4 @@
 import time
-# from umqtt.simple import MQTTClient
-# import ubinascii
 import machine
 import network
 import json

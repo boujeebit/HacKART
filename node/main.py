@@ -52,7 +52,17 @@ config_file.close()
 
 if 'mqtt' in config and 'endpoint' in config['mqtt']:
   try:
-    if 'certificate' in config['mqtt'] and config['mqtt']['certificate'] and 'key' in config['mqtt'] and config['mqtt']['key']:
+    if 'port' in config['mqtt']:
+      port = config['mqtt']['port']
+    else:
+      port = 8883
+
+    if 'keepalive' in config['mqtt']:
+      keepalive = config['mqtt']['keepalive']
+    else:
+      keepalive = 10000
+
+    if 'ssl' in config['mqtt'] and 'certificate' in config['mqtt']['ssl'] and config['mqtt']['ssl']['certificate'] and 'key' in config['mqtt']['ssl'] and config['mqtt']['ssl']['key']:
       #SSL Enabled
       with open('/certs/'+config['mqtt']['key'], 'rb') as f:
         key_data = f.read()
@@ -62,7 +72,7 @@ if 'mqtt' in config and 'endpoint' in config['mqtt']:
           
       SSL_PARAMS = {'key': key_data,'cert': cert_data, 'server_side': False}
 
-      client = mqtt_connect(config['id'], config['mqtt']['endpoint'], ssl=True, ssl_params=SSL_PARAMS)
+      client = mqtt_connect(config['id'], config['mqtt']['endpoint'], port=port, keepalive=keepalive, ssl=True, ssl_params=SSL_PARAMS)
     else:
       client = mqtt_connect(config['id'], config['mqtt']['endpoint'])
   except OSError as e:
@@ -73,7 +83,7 @@ led.off()
 
 # Initial Hello
 msg = {'MID': ubinascii.hexlify(machine.unique_id()), 'network': station.ifconfig()}
-client.publish( topic='testing/test', msg=json.dumps(msg) )
+client.publish( topic='hackart/heartbeat', msg=json.dumps(msg) )
 
 while True:
   try:
