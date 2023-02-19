@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-// import { graud, superusergraud } from "./guards";
+import { graud } from "./guard";
 
 Vue.use(VueRouter);
 
@@ -11,14 +11,19 @@ const routes = [
     component: () => import("@/containers/Default"),
     redirect: { name: "Dashboard" },
     name: "Root",
-    //   beforeEnter: graud,
+    beforeEnter: graud,
     children: [
-    {
-        path: "/_",
-        name: "Dashboard",
-        component: () => import("@/views/Dashboard")
-    }
+      {
+          path: "/_",
+          name: "Dashboard",
+          component: () => import("@/views/Dashboard")
+      }
     ]
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/authentication/Login")
   },
   {
     path: "*",

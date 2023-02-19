@@ -2,7 +2,7 @@
 
 > **Warning** 
 >
->**Users of this software assume all liability**. Code in this repository enables hardware to pop balloons in a manor that could cause physical or enviromental harm. The author and its contributors are not responsible for any damages as a result. 
+>**Users of this software assume all liability**. Code in this repository enables hardware to pop balloons in a manor that could cause physical or enviromental harm. The author and its contributors are not responsible for any damages as a result of this software. 
 
 HacKART is a Mario Kart inspired CTF hacking challenge where NodeMCUs are used to pop balloons when a challenge is sovled. The NodeMCU client is written using MicroPython firmware on a NodeMCU with a ESP8266 chipset and 1MB of memory. In future iterations testing will also be done on ESP32 chipset.
 

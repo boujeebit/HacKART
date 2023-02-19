@@ -10,11 +10,17 @@ class NodeType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     nodes = graphene.List(NodeType)
+    node_count = graphene.Int()
 
     def resolve_nodes(self, info):
         validate_user_is_authenticated(info.context.user)
         
         return Node.objects.all()
+
+    def resolve_node_count(self, info):
+        validate_user_is_authenticated(info.context.user)
+        
+        return Node.objects.all().count()
 
 class HeartbeatMutation(graphene.Mutation):
     message = graphene.String()

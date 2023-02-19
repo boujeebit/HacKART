@@ -1,5 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
 from identity.validator import validate_user_is_authenticated
@@ -16,3 +17,34 @@ class Query(object):
         validate_user_is_authenticated(info.context.user)
 
         return info.context.user
+
+class LogIn(graphene.Mutation):
+    id = graphene.Int()
+    isAuthenticated = graphene.Int()
+
+    class Arguments:
+        username = graphene.String(required=True)
+        password = graphene.String(required=True)
+
+    def mutate(self, info, username, password):
+        user = authenticate(username=username, password=password)
+
+        if not user:
+            raise Exception('Invalid username or password')
+
+        login(info.context, user)
+
+        return LogIn(id=user.id, isAuthenticated=True)
+    
+class LogOut(graphene.Mutation):
+    status = graphene.String()
+
+    def mutate(self, info):
+        user = info.context.user
+        validate_user_is_authenticated(user)
+        logout(info.context) 
+        return LogOut(status='Logged Out')
+
+class Mutation(object):
+    login  = LogIn.Field()
+    logout = LogOut.Field()
