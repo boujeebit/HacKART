@@ -7,6 +7,8 @@ node/certs/*
 # Allow the readme documentation to get pushed.
 !node/certs/README.md
 
+# Testing directory for new working features.
+testing
 
 #
 # SERVER BACKEND IGNORE FILES
