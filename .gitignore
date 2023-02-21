@@ -6,6 +6,8 @@
 node/certs/*
 # Allow the readme documentation to get pushed.
 !node/certs/README.md
+# Ignore the config.json file if one.
+node/config.json
 
 # Testing directory for new working features.
 testing

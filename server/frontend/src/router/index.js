@@ -17,7 +17,13 @@ const routes = [
           path: "/_",
           name: "Dashboard",
           component: () => import("@/views/Dashboard")
-      }
+      },
+      {
+        path: "/node/:id",
+        name: "Node",
+        props: true,
+        component: () => import("@/views/Node")
+    }
     ]
   },
   {

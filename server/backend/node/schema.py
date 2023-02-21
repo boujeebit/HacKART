@@ -2,15 +2,25 @@ import graphene, datetime
 from graphene_django import DjangoObjectType
 from identity.validator import validate_user_is_authenticated
 
-from node.models import Node, Heartbeat
+from node.models import Node, Network, Heartbeat
 
 class NodeType(DjangoObjectType):
     class Meta:
         model = Node
 
+class NetworkType(DjangoObjectType):
+    class Meta:
+        model = Network
+
 class Query(graphene.ObjectType):
+    node = graphene.Field(NodeType, id=graphene.String(required=True))
     nodes = graphene.List(NodeType)
     node_count = graphene.Int()
+
+    def resolve_node(self, info, id):
+        validate_user_is_authenticated(info.context.user)
+
+        return Node.objects.get(id=id)
 
     def resolve_nodes(self, info):
         validate_user_is_authenticated(info.context.user)
