@@ -4,6 +4,14 @@ import machine
 import json
 import ubinascii
 
+def critical_failure():
+  led = machine.Pin(16, machine.Pin.OUT)
+  while True:
+    led.off()
+    time.sleep(0.2)
+    led.on()
+    time.sleep(0.2)
+
 def flash_red():
   led = machine.Pin(16, machine.Pin.OUT)
   for x in range(10):
@@ -29,66 +37,57 @@ def restart_and_reconnect():
   time.sleep(10)
   machine.reset()
 
-try:
-  config_file = open('config.json', 'rb')
-except:
-  print("No configuration file...")
-  led = machine.Pin(16, machine.Pin.OUT)
-  led.off()
-  time.sleep(10)
-  machine.reset()
 
 try:
+  print("[+] Loading configuration file.")
+  config_file = open('config.json', 'rb')
   config = json.loads(config_file.read())
 except:
-  print("Unable to load configuration file...")
-  led = machine.Pin(16, machine.Pin.OUT)
-  led.off()
-  time.sleep(10)
-  machine.reset()
+  print("[-] Failed to load the configuration.")
+  critical_failure()
 
+print("[+] Configuration file loaded successfully.")
 config_file.close()
 
 
 if 'mqtt' in config and 'endpoint' in config['mqtt']:
   try:
-    if 'port' in config['mqtt']:
-      port = config['mqtt']['port']
-    else:
-      port = 8883
-
-    if 'keepalive' in config['mqtt']:
-      keepalive = config['mqtt']['keepalive']
-    else:
-      keepalive = 10000
-
     if 'ssl' in config['mqtt'] and 'certificate' in config['mqtt']['ssl'] and config['mqtt']['ssl']['certificate'] and 'key' in config['mqtt']['ssl'] and config['mqtt']['ssl']['key']:
       #SSL Enabled
-      with open('/certs/'+config['mqtt']['key'], 'rb') as f:
+      print("[-] SSL enabled MQTT identitied in configuation.")
+      with open('/certs/'+config['mqtt']['ssl']['key'], 'rb') as f:
         key_data = f.read()
 
-      with open('/certs/'+config['mqtt']['certificate'], 'rb') as f:
+      with open('/certs/'+config['mqtt']['ssl']['certificate'], 'rb') as f:
         cert_data = f.read()
           
       SSL_PARAMS = {'key': key_data,'cert': cert_data, 'server_side': False}
 
-      client = mqtt_connect(config['id'], config['mqtt']['endpoint'], port=port, keepalive=keepalive, ssl=True, ssl_params=SSL_PARAMS)
+      print("[-] Attempting to connect to MQTT broker over ssl.")
+      client = mqtt_connect(config['id'], config['mqtt']['endpoint'], ssl=True, ssl_params=SSL_PARAMS)
+      print("[+] MQTT connection made successfully.")
     else:
-      client = mqtt_connect(config['id'], config['mqtt']['endpoint'])
+      print("[-] Malformed SSL settings in the configuration file.")
+      critical_failure()
   except OSError as e:
     restart_and_reconnect()
+else:
+  print("[!] No MQTT/Endpoint setting in configuration file.")
+  critical_failure()
 
 led = machine.Pin(16, machine.Pin.OUT)
 led.off()
 
 # Initial Hello
 msg = {'MID': ubinascii.hexlify(machine.unique_id()), 'network': station.ifconfig()}
-client.publish( topic='hackart/heartbeat', msg=json.dumps(msg) )
+client.publish( topic='testing/test', msg=json.dumps(msg) )
 
+print("\n\n[+] Starting normal operations..\n")
 while True:
   try:
     msg= { 'id' : config['id'] }
-    client.publish( topic='hackart/heartbeat', msg=json.dumps(msg) )
+    # client.publish( topic='hackart/heartbeat', msg=json.dumps(msg) )
+    print(msg)
     # new_message = client.check_msg()
     # if new_message != 'None':
     #   client.publish(topic_pub, b'received')
