@@ -1,8 +1,8 @@
 <template>
     <div>
-  <b-navbar toggleable="lg" type="dark" variant="dark">
+  <b-navbar toggleable="lg" type="dark">
     <div class="container">
-    <b-navbar-brand href="#">HacKART</b-navbar-brand>
+    <b-navbar-brand @click="$router.push({ name: 'Dashboard' })" style="cursor: pointer;">HacKART</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 

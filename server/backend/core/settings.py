@@ -24,9 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-b0=0jme=rk+t0*xva1r%d6(rgr4di#b!)4hbq+dbje7dmkvq5d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.environ.get("DEBUGGER") == 'True':
+    DEBUG = True
+else:
+    DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,7 +44,8 @@ INSTALLED_APPS = [
     "graphene_django",
     'identity',
     'node',
-    'team'
+    'team',
+    'game'
 ]
 
 MIDDLEWARE = [
@@ -126,8 +130,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/server/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'server')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND="noninteractive"
 
-LABEL maintainer="Mickey <boujeebit>" 
+LABEL maintainer="Mickey <@boujeebit>" 
 
 RUN apt-get update     && \
     apt-get upgrade -y && \
@@ -29,16 +29,9 @@ RUN pip3 install -r /tmp/requirements.txt
 
 COPY . /var/www/backend/
 
-COPY certs/ /etc/apache2/ssl/
-
 RUN chmod 664 /var/www/backend/db.sqlite3
 RUN chown -R www-data:www-data /var/www/
 
-COPY configs/prd/000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY configs/prd/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
-
-RUN a2enmod rewrite
-RUN a2enmod ssl
-RUN a2ensite default-ssl.conf
+COPY configs/dev/development.conf /etc/apache2/sites-available/000-default.conf
 
 CMD apachectl -D FOREGROUND

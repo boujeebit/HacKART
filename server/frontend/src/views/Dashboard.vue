@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h3>Dashboard</h3>
-    <hr>
+    <!-- <h3>Dashboard</h3> -->
+    <!-- <hr> -->
     <HUD/>
     <br>
     <nodes/>

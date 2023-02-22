@@ -11,7 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="node in nodes" :key="node.id" @click="$router.push({ name: 'Node', params: {id: node.id} })">
+        <tr v-for="node in nodes" :key="node.id" @click="$router.push({ name: 'Node', params: {id: node.id} })" style="cursor: pointer;">
           <td>{{node.id}}</td>
           <td>{{node.team?.name}}</td>
           <td>{{node.heartbeat | moment("MMM Do YYYY, h:mm:ss a") }}</td>

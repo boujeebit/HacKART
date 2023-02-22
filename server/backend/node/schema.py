@@ -2,7 +2,8 @@ import graphene, datetime
 from graphene_django import DjangoObjectType
 from identity.validator import validate_user_is_authenticated
 
-from node.models import Node, Network, Heartbeat
+
+from node.models import Node, Network
 
 class NodeType(DjangoObjectType):
     class Meta:
@@ -32,35 +33,35 @@ class Query(graphene.ObjectType):
         
         return Node.objects.all().count()
 
-class HeartbeatMutation(graphene.Mutation):
-    message = graphene.String()
-    node = graphene.Field(NodeType)
+# class HeartbeatMutation(graphene.Mutation):
+#     message = graphene.String()
+#     node = graphene.Field(NodeType)
 
-    class Arguments:
-        id = graphene.String(required=True)
+#     class Arguments:
+#         id = graphene.String(required=True)
 
-    @classmethod
-    def mutate(cls, root, info, id):
-        auth_header = info.context.META.get('HTTP_KEY')
+#     @classmethod
+#     def mutate(cls, root, info, id):
+#         auth_header = info.context.META.get('HTTP_KEY')
 
-        if not auth_header:
-            return HeartbeatMutation(message="ERROR: No Auth key provided.")
+#         if not auth_header:
+#             return HeartbeatMutation(message="ERROR: No Auth key provided.")
 
-        try:
-            Heartbeat.objects.get(key=auth_header)
-        except:
-            return HeartbeatMutation(message="ERROR: BAD KEY")
+#         try:
+#             Heartbeat.objects.get(key=auth_header)
+#         except:
+#             return HeartbeatMutation(message="ERROR: BAD KEY")
 
-        try:
-            node = Node.objects.get(id=id)
-        except:
-            return HeartbeatMutation(message="ERROR: Node not found with provided ID")
+#         try:
+#             node = Node.objects.get(id=id)
+#         except:
+#             return HeartbeatMutation(message="ERROR: Node not found with provided ID")
 
-        node.heartbeat = datetime.datetime.now()
-        node.save()
+#         node.heartbeat = datetime.datetime.now()
+#         node.save()
 
-        return HeartbeatMutation(message="Heartbeat Successful", node=node)
+#         return HeartbeatMutation(message="Heartbeat Successful", node=node)
 
 
-class Mutation(graphene.ObjectType):
-    heartbeat = HeartbeatMutation.Field()
+# class Mutation(graphene.ObjectType):
+#     heartbeat = HeartbeatMutation.Field()

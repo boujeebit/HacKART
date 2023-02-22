@@ -19,9 +19,11 @@ from graphene_django.views import GraphQLView
 
 from django.views.decorators.csrf import csrf_exempt
 from node.views import heartbeat
+from game.views import hook
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", csrf_exempt(GraphQLView.as_view(graphiql=True))),
-    path('heartbeat/', csrf_exempt(heartbeat))
+    path('heartbeat/', csrf_exempt(heartbeat)),
+    path('platform/hook', csrf_exempt(hook))
 ]

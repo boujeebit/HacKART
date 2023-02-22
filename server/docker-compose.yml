@@ -1,0 +1,44 @@
+version: '3'
+
+networks:
+  hackart:
+    driver: bridge
+
+services:
+  hackart-backend:
+    restart: unless-stopped
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hackart-backend
+    networks:
+      - hackart
+    environment:
+      - DEBUGGER=True
+      - APP_KEY="plzchange"
+
+  hackart-frontend:
+    restart: unless-stopped
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: hackart-frontend
+    networks:
+      - hackart
+
+  proxy:
+    restart: unless-stopped
+    image: nginx:latest
+    container_name: proxy
+    volumes:
+      # CERTS 
+      - ./certs/:/etc/nginx/ssl/
+      - ./proxy/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - hackart
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - hackart-backend
+      - hackart-frontend

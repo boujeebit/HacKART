@@ -16,6 +16,7 @@ testing
 # SERVER BACKEND IGNORE FILES
 #
 
+server/certs
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -26,6 +27,7 @@ __pycache__/
 local_settings.py
 db.sqlite3
 server/backend/static/*
+server/backend/server/*
 
 #
 # SERVER FRONTEND IGNORE FILES

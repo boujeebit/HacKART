@@ -7,7 +7,8 @@ class Node(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     machineid = models.CharField(max_length=128, unique=True, null=True, blank=True)
 
-    heartbeats = models.BooleanField(null=True, blank=True)
+    heartbeats  = models.BooleanField(null=True, blank=True)
+    initialized = models.DateTimeField(null=True, blank=True)
     heartbeat = models.DateTimeField(null=True, blank=True)
     internval = models.IntegerField(null=True, blank=True, default=60)
 
@@ -22,10 +23,3 @@ class Network(models.Model):
 
     node = models.OneToOneField(Node, on_delete=models.CASCADE, related_name="networking")
     # node = models.ForeignKey(Team, null=False, blank=False, on_delete=models.CASCADE, related_name="networking")
-
-# Used for Heartbeat Proxy
-class Heartbeat(models.Model):  
-    key = models.UUIDField(default=uuid.uuid4, editable=False)
-
-    def __str__(self):
-        return str(self.key)

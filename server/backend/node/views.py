@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import json, datetime
 
-from node.models import Node, Network, Heartbeat
+from identity.models import Heartbeat
+from node.models import Node, Network
 
 def heartbeat(request):
     if 'key' not in request.headers:
@@ -29,6 +30,7 @@ def heartbeat(request):
     node.save()
 
     if 'initialized' in payload:
+        node.initialized = datetime.datetime.now()
         node.machineid = payload['initialized']['mid']
         if 'heartbeat' in payload['initialized']:
             if payload['initialized']['heartbeat']['enabled']:
