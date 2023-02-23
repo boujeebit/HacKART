@@ -10,7 +10,7 @@ class Node(models.Model):
     heartbeats  = models.BooleanField(null=True, blank=True)
     initialized = models.DateTimeField(null=True, blank=True)
     heartbeat = models.DateTimeField(null=True, blank=True)
-    internval = models.IntegerField(null=True, blank=True, default=60)
+    internval = models.IntegerField(null=True, blank=True)
 
     team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.SET_NULL, related_name="node")
 

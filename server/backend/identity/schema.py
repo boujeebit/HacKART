@@ -2,9 +2,10 @@ import graphene
 from graphene_django import DjangoObjectType
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from identity.models import Platform, Heartbeat
+from identity.models import Platform, Heartbeat, Broker
 
 from identity.validator import validate_user_is_authenticated
+import requests
 
 class Identity(DjangoObjectType):
     class Meta:
@@ -25,6 +26,7 @@ class Query(object):
     identity = graphene.Field(Identity)
     platforms = graphene.List(PlatformType)
     heartbeats = graphene.List(HeartbeatType)
+    blinky = graphene.Boolean()
 
     def resolve_identity(self, info):
         validate_user_is_authenticated(info.context.user)
@@ -40,6 +42,27 @@ class Query(object):
         validate_user_is_authenticated(info.context.user)
 
         return Heartbeat.objects.all()
+
+    # Test blink of ESP 
+    def resolve_blinky(self, info):
+        validate_user_is_authenticated(info.context.user)
+
+        try:
+            broker = Broker.objects.all().first()
+        except:
+            return False
+        publish_url = 'https://%s:%i/topics/hackart/init?qos=1' % (broker.endpoint, broker.port)
+        publish_msg = "Hello from HacKART terminal"
+
+        publish = requests.request('POST',
+            publish_url,
+            data=publish_msg,
+            cert=['', ''])
+
+        if publish.status_code == 200:
+            return True
+        else:
+            return False
 
 class LogIn(graphene.Mutation):
     id = graphene.Int()

@@ -9,6 +9,9 @@ node/certs/*
 # Ignore the config.json file if one.
 node/config.json
 
+# Ignore sensitive directories
+server/certs
+
 # Testing directory for new working features.
 testing
 
@@ -16,7 +19,6 @@ testing
 # SERVER BACKEND IGNORE FILES
 #
 
-server/certs
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

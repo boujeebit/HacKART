@@ -22,3 +22,11 @@ class Heartbeat(models.Model):
 
     def __str__(self):
         return self.name
+
+# Used for MQTT connection
+class Broker(models.Model):
+    endpoint = models.CharField(max_length=256, null=False, blank=False)
+    port = models.IntegerField(default=8443, null=False, blank=False)
+
+    def __str__(self):
+        return self.endpoint

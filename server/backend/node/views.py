@@ -51,14 +51,14 @@ def heartbeat(request):
             networking.gateway = payload['initialized']['interface']['lease'][2]
             networking.dns = payload['initialized']['interface']['lease'][3]
         except:
-            network = Network(mac=payload['initialized']['interface']['mac'], 
+            networking = Network(mac=payload['initialized']['interface']['mac'], 
                 address=payload['initialized']['interface']['lease'][0],
                 subnet=payload['initialized']['interface']['lease'][1],
                 gateway=payload['initialized']['interface']['lease'][2],
                 dns=payload['initialized']['interface']['lease'][3],
                 node=node)
 
-            network.save()
+        networking.save()
 
 
 
