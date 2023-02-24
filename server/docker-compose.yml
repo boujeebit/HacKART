@@ -11,6 +11,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: hackart-backend
+    volumes:
+      - ./certs/broker/:/root/
     networks:
       - hackart
     environment:
@@ -32,7 +34,7 @@ services:
     container_name: proxy
     volumes:
       # CERTS 
-      - ./certs/:/etc/nginx/ssl/
+      - ./certs/server/:/etc/nginx/ssl/
       - ./proxy/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - hackart

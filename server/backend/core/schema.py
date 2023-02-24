@@ -8,7 +8,7 @@ import game.schema
 class Query(identity.schema.Query, node.schema.Query, team.schema.Query, game.schema.Query, graphene.ObjectType):
     pass
 
-class Mutation(identity.schema.Mutation, graphene.ObjectType):
+class Mutation(identity.schema.Mutation, node.schema.Mutation, graphene.ObjectType):
     pass
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

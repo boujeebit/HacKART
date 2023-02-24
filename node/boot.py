@@ -9,6 +9,10 @@ esp.osdebug(None)
 import gc
 gc.collect()
 
+print("\n\n\n")
+print("[-] Holding 5 seconds for REPL")
+time.sleep(5)
+
 try:
   config_file = open('config.json', 'rb')
 except:
@@ -30,7 +34,7 @@ except:
 config_file.close()
 
 station = network.WLAN(network.STA_IF)
-print("\n\n\n")
+
 print("[-] Device details:\n\tHardware ID: %s\n\tMAC Address: %s" % ( ubinascii.hexlify(machine.unique_id()).decode(), ubinascii.hexlify(station.config('mac'),':').decode() ) )
 
 if 'network' in config and 'ssid' in config['network'] and 'password' in config['network']:
