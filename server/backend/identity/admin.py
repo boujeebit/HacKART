@@ -1,6 +1,5 @@
 from django.contrib import admin
-from identity.models import Platform, Heartbeat, Broker
+from identity.models import Broker, Integration
 
-admin.site.register(Platform)
-admin.site.register(Heartbeat)
 admin.site.register(Broker)
+admin.site.register(Integration)

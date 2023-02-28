@@ -2,7 +2,7 @@
   <div>
     <b-container>
       <b-row>
-        <b-col>
+        <b-col style="padding: 0;">
           <b-card title="Nodes" class="mb-2">
             <b-card-text>
               {{ nodeCount }}
@@ -16,7 +16,7 @@
             </b-card-text>
           </b-card>
         </b-col>
-        <b-col>
+        <b-col style="padding: 0;">
           <b-card title="Solves" class="mb-2">
             <b-card-text>
               --

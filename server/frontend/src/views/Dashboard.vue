@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <!-- <h3>Dashboard</h3> -->
-    <!-- <hr> -->
-    <HUD/>
-    <br>
-    <nodes/>
+  <div class="container">
+    <div style="margin-top:15px;">
+      <HUD/>
+      <br>
+      <nodes/>
+    </div>
   </div>
 </template>
 

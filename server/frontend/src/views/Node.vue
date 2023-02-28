@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="container">
+    <div style="margin-top:15px;">
     <div class="row">
       <div class="col-10">
-        <h3>Node <span style="font-size: small;">({{ $props.id }})</span></h3>
+        <h3>Node ({{ node.name }})</h3>
       </div>
       <div class="col-2" style="text-align:right;">
         <button type="button" class="btn btn-outline-danger" @click="blinky()">Blinky</button>
@@ -13,16 +14,11 @@
       </div>
     </div>
     
-    <hr>
 
-    <div v-if="!$apollo.queries.node.loading">
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Node</legend>
+      <div v-if="!$apollo.queries.node.loading">
       <table class="table">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Value</th>
-          </tr>
-        </thead>
         <tbody>
           <tr>
             <td>HacKART ID</td>
@@ -48,10 +44,17 @@
             <td>Interval</td>
             <td>{{node.internval}}</td>
           </tr>
-          <tr>
-            <td></td>
-            <td></td>
-          </tr>
+        </tbody>
+      </table>
+    </div>
+    </fieldset>
+
+
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Networking</legend>
+      <div v-if="!$apollo.queries.node.loading">
+      <table class="table">
+        <tbody>
           <tr>
             <td>MAC</td>
             <td>{{node.networking?.mac}}</td>
@@ -72,21 +75,25 @@
             <td>DNS</td>
             <td>{{node.networking?.dns}}</td>
           </tr>
-          <tr>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Solves</td>
-            <td>{{node.solves}}</td>
-          </tr>
         </tbody>
       </table>
     </div>
-    <div v-else>
-      Loading
-    </div>
-    <!-- {{ node }} -->
+    </fieldset>
+
+
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Solves</legend>
+      <div v-for="solve in node.solves" :key="solve.id">
+        {{ solve.challenge.name }} // {{ solve.time }} //{{ solve.challenge.balloon }}
+      </div>
+    </fieldset>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+  </div>
   </div>
 </template>
 
@@ -114,6 +121,7 @@
           query($id: String!) {
             node(id: $id) {
               id
+              name
               machineid
               initialized
               heartbeats
@@ -127,6 +135,7 @@
                 dns
               }
               solves {
+                time
                 challenge {
                   name
                   balloon
@@ -163,3 +172,22 @@
     }
   };
 </script>
+
+<style>
+fieldset.scheduler-border {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+}
+
+legend.scheduler-border {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:inherit; /* Or auto */
+    padding:0 10px; /* To give a bit of padding on the left and right */
+    border-bottom:none;
+}
+</style>

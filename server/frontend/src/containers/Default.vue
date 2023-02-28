@@ -8,11 +8,12 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <!-- <b-nav-item href="#">Teams</b-nav-item>
-        <b-nav-item href="#" disabled>Challenges</b-nav-item> -->
+        <!-- <b-nav-item href="#">Teams</b-nav-item> -->
+        
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
+        <b-nav-item @click="$router.push({ name: 'Settings' })">Settings</b-nav-item>
         <b-nav-item-dropdown right>
           <!-- Using 'button-content' slot -->
           <template #button-content>
@@ -25,11 +26,11 @@
     </b-collapse>
     </div>
   </b-navbar>
-    <div class="container">
-        <div style="margin-top:15px;">
+    <!-- <div class="container">
+        <div style="margin-top:15px;"> -->
             <router-view></router-view>
-        </div>
-    </div>
+        <!-- </div>
+    </div> -->
     </div>
 </template>
 

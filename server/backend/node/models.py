@@ -13,7 +13,7 @@ class Node(models.Model):
     heartbeat = models.DateTimeField(null=True, blank=True)
     internval = models.IntegerField(null=True, blank=True)
 
-    team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.SET_NULL, related_name="node")
+    team = models.OneToOneField(Team, null=True, blank=True, on_delete=models.SET_NULL, related_name="node")
 
 class Network(models.Model):
     mac = models.CharField(max_length=17, unique=True, null=False, blank=False)

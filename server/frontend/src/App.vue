@@ -12,21 +12,23 @@ export default {
 
 <style>
 html {
-  background-color: #23272A;
+  background-color: #03030d;
 }
 .app {
-  background-color: #23272A;
+  background-color: #03030d;
   color: white;
   height: 100vh;
 }
 .navbar {
-  background-color: #2C2F33;
+  background-color: #03030d;
 }
 .card {
-  border: 1px solid #992D22 !important;
+  border: 1px solid #090a15 !important;
+  margin: 0 !important;
 }
 .card-body {
-  background-color: #2C2F33;
+  color: #ff5555;
+  background-color: #090a15;
 }
 .table {
   color: white !important;

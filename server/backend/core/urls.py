@@ -25,5 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", csrf_exempt(GraphQLView.as_view(graphiql=True))),
     path('heartbeat/', csrf_exempt(heartbeat)),
-    path('platform/hook', csrf_exempt(hook))
+    path('platform/<str:id>', csrf_exempt(hook))
 ]

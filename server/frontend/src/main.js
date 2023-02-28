@@ -11,6 +11,22 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(require('vue-moment'))
 
+/* import the fontawesome core */
+import { library } from '@fortawesome/fontawesome-svg-core'
+
+/* import font awesome icon component */
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+/* import specific icons */
+import { faCircleQuestion, faCircle, faCircleExclamation, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+
+/* add icons to the library */
+library.add(faCircleQuestion, faCircle, faCircleExclamation, faCircleCheck)
+
+/* add font awesome icon component */
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+
 import VueApollo from 'vue-apollo'
 Vue.use(VueApollo)
 

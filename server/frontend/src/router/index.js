@@ -19,11 +19,34 @@ const routes = [
           component: () => import("@/views/Dashboard")
       },
       {
+        path: "/settings/",
+        name: "Settings",
+        component: () => import("@/containers/Settings"),
+        redirect: { name: "Setting_Nodes" },
+        children: [
+          {
+            path: "nodes/",
+            name: "Setting_Nodes",
+            component: () => import("@/views/settings/Nodes")
+          },
+          {
+            path: "teams/",
+            name: "Setting_Teams",
+            component: () => import("@/views/settings/Teams")
+          },
+          {
+            path: "keys/",
+            name: "Setting_Keys",
+            component: () => import("@/views/settings/Keys")
+          },
+        ]
+      },
+      {
         path: "/node/:id",
         name: "Node",
         props: true,
         component: () => import("@/views/Node")
-    }
+      }
     ]
   },
   {

@@ -2,14 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import json, datetime
 
-from identity.models import Heartbeat
+from identity.models import Integration
 from node.models import Node, Network
 
 def heartbeat(request):
     if 'key' not in request.headers:
         return HttpResponse(status=401)
 
-    if not Heartbeat.objects.filter(key=request.headers['key']):
+    if not Integration.objects.filter(key=request.headers['key'], type='HB'):
         return HttpResponse(status=403)
 
     if request.body:
