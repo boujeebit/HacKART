@@ -8,7 +8,7 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item @click="$router.push({ name: 'Setting_Nodes' })">Nodes</b-nav-item>
+          <!-- <b-nav-item @click="$router.push({ name: 'Setting_Nodes' })">Nodes</b-nav-item> -->
           <b-nav-item @click="$router.push({ name: 'Setting_Teams' })">Teams</b-nav-item>
           <b-nav-item href="#">Challenges</b-nav-item>
           

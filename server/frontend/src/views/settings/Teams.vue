@@ -6,16 +6,16 @@
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Name</th>
+            <th>External ID</th>
             <th>Created</th>
             <th>Integration</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="team in teams" :keys="team.id">
-            <td>{{ team.id }}</td>
             <td>{{ team.name }}</td>
+            <td>{{ team.externalId }}</td>
             <td>{{ team.created }}</td>
             <td>{{ team.integration?.name }}</td>
           </tr>
@@ -41,6 +41,7 @@ export default {
         query{
           teams {
             id
+            externalId
             name
             created
             integration {
