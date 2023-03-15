@@ -35,6 +35,11 @@ const routes = [
             component: () => import("@/views/settings/Teams")
           },
           {
+            path: "challenges/",
+            name: "Setting_Challenges",
+            component: () => import("@/views/settings/Challenges")
+          },
+          {
             path: "keys/",
             name: "Setting_Keys",
             component: () => import("@/views/settings/Keys")

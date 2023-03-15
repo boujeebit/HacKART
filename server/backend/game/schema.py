@@ -25,3 +25,23 @@ class Query(graphene.ObjectType):
         validate_user_is_authenticated(info.context.user)
 
         return Solve.objects.all()
+
+
+class ChallengeMutation(graphene.Mutation):
+    message = graphene.String()
+
+    class Arguments:
+        action = graphene.String()
+        # id = graphene.String()
+        # externalid = graphene.String()
+        # name = graphene.String()
+        # balloon = graphene.String()
+    
+    @classmethod
+    def mutate(self, info, action):
+        # validate_user_is_authenticated(info.context.user)
+        
+        return ChallengeMutation(message='Challenge')
+
+class Mutation(object):
+    challenge = ChallengeMutation.Field()

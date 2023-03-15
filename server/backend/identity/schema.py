@@ -80,6 +80,14 @@ class LogOut(graphene.Mutation):
         logout(info.context) 
         return LogOut(status='Logged Out')
 
+'''
+mutation($action: String!, $id: String, $type: String, $name: String ) {
+	integration(action: $action, id: $id, type: $type, name: $name) {
+		message
+        key
+  }
+}
+'''
 class IntegrationMutation(graphene.Mutation):
     message = graphene.String()
     integration = graphene.Field(IntegrationObj)

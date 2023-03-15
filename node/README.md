@@ -53,3 +53,45 @@
   }
 }
 ```
+
+## Messages
+
+Topic
+hackart/<hackart_id>
+
+From control
+```json
+{
+   "type": "initialized",
+   "team": {
+    "id": "String",
+    "solves": {
+      "A": false,
+      "B": false,
+      "C": false
+    }
+   }
+}
+```
+
+Solve
+```json
+{
+  "type": "pop",
+  "balloon": "A"
+}
+```
+
+
+Heartbeat
+
+```json
+{
+  "node": "id",
+  "state": {
+    "A": false,
+    "B": false,
+    "C": false
+  }
+}
+```

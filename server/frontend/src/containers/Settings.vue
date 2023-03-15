@@ -10,8 +10,7 @@
         <b-navbar-nav>
           <!-- <b-nav-item @click="$router.push({ name: 'Setting_Nodes' })">Nodes</b-nav-item> -->
           <b-nav-item @click="$router.push({ name: 'Setting_Teams' })">Teams</b-nav-item>
-          <b-nav-item href="#">Challenges</b-nav-item>
-          
+          <b-nav-item @click="$router.push({ name: 'Setting_Challenges' })">Challenges</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">

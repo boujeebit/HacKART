@@ -111,6 +111,10 @@ def hook(request, id=None):
     except:
       return HttpResponse(status=500)
 
+    # Check if node or team has this solve.
+
+    # Send Solve to AWS
+
     try:
       solve = Solve(challenge=challenge, node=node)
       solve.save()

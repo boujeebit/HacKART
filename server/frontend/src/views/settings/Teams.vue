@@ -1,7 +1,14 @@
 <template>
   <div class="container">
     <div style="margin-top:15px;">
-      <h3>Teams</h3>
+      <div class="row">
+        <div class="col-10">
+          <h3>Teams</h3>
+        </div>
+        <div class="col-2" style="text-align:right;">
+          <button type="button" class="btn btn-outline-danger" @click="create()">ADD +</button>
+        </div>
+      </div>
       <hr>
       <table class="table">
         <thead>
@@ -16,7 +23,7 @@
           <tr v-for="team in teams" :keys="team.id">
             <td>{{ team.name }}</td>
             <td>{{ team.externalId }}</td>
-            <td>{{ team.created }}</td>
+            <td>{{ team.created  | moment("MMM Do YYYY, HH:mm:ss") }}</td>
             <td>{{ team.integration?.name }}</td>
           </tr>
         </tbody>
@@ -53,5 +60,10 @@ export default {
       `
     } 
   },
+  methods: {
+    create() {
+      console.log("hello--")
+    }
+  }
 }
 </script>

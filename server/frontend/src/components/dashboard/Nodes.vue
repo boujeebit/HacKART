@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="text-align:right;">
-      <button class="btn btn-add">Create Node </button>
+      <!-- <button class="btn btn-add">Create Node </button> -->
     </div>
     
     <table class="table">
@@ -9,6 +9,7 @@
         <tr>
           <th>Name</th>
           <th>Team</th>
+          <th>Initialized</th>
           <th>Heartbeat</th>
           <th style="text-align: right;">Balloons</th>
         </tr>
@@ -17,8 +18,9 @@
         <tr v-for="node in nodes" :key="node.id" @click="$router.push({ name: 'Node', params: {id: node.id} })" style="cursor: pointer;">
           <td v-b-tooltip.hover.left :title="'UUID: '+node.id">{{node.name}}</td>
           <td>{{node.team?.name}}</td>
+          <td v-if="node.initialized">{{node.initialized | moment("MMM Do YYYY, h:mm:ss a") }}</td>
           <td v-if="node.heartbeat">{{node.heartbeat | moment("MMM Do YYYY, h:mm:ss a") }}</td>
-          <td v-else></td>
+          <td v-else><i>Never seen...</i></td>
           <td style="text-align: right;">
             <template v-if="!node.heartbeat">
               <font-awesome-icon class="status" style="color:#ffb86c" icon="fa-circle-question"/>
@@ -57,6 +59,7 @@ export default {
             id
             name
             heartbeat
+            initialized
             team {
               id
               name
