@@ -9,18 +9,6 @@ class NodeType(DjangoObjectType):
     class Meta:
         model = Node
 
-    balloons = graphene.JSONString()
-    def resolve_balloons(self, info):
-        balloons = {'b1': False, 'b2': False, 'b3': False}
-        for solve in self.solves.all():
-            if solve.challenge.balloon == 1:
-                balloons['b1'] = True
-            elif solve.challenge.balloon == 2:
-                balloons['b2'] = True
-            elif solve.challenge.balloon == 3:
-                balloons['b3'] = True
-        return balloons
-
 class NetworkType(DjangoObjectType):
     class Meta:
         model = Network

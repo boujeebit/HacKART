@@ -7,6 +7,7 @@
     <table class="table">
       <thead>
         <tr>
+          <th></th>
           <th>Name</th>
           <th>Team</th>
           <th>Initialized</th>
@@ -16,28 +17,52 @@
       </thead>
       <tbody>
         <tr v-for="node in nodes" :key="node.id" @click="$router.push({ name: 'Node', params: {id: node.id} })" style="cursor: pointer;">
+          <td>
+            <template v-if="!node.state && node.team?.state">
+              <font-awesome-icon class="balloon-danger" icon="fa-solid fa-triangle-exclamation"/>
+            </template>
+            <template v-else-if="!node.state || !node.team?.state">
+              <font-awesome-icon class="balloon-warn" icon="fa-solid fa-triangle-exclamation"/>
+            </template>
+            <template v-else-if="node.team?.state">
+              <font-awesome-icon v-if="node.state !== node.team.state" class="balloon-danger" icon="fa-solid fa-triangle-exclamation"/>
+              <font-awesome-icon v-else class="balloon-success" icon="fa-solid fa-square-check"/>
+            </template>
+          </td>
           <td v-b-tooltip.hover.left :title="'UUID: '+node.id">{{node.name}}</td>
           <td>{{node.team?.name}}</td>
           <td v-if="node.initialized">{{node.initialized | moment("MMM Do YYYY, h:mm:ss a") }}</td>
+          <td v-else><i>Never seen...</i></td>
           <td v-if="node.heartbeat">{{node.heartbeat | moment("MMM Do YYYY, h:mm:ss a") }}</td>
           <td v-else><i>Never seen...</i></td>
           <td style="text-align: right;">
-            <template v-if="!node.heartbeat">
-              <font-awesome-icon class="status" style="color:#ffb86c" icon="fa-circle-question"/>
-              <font-awesome-icon class="status" style="color:#ffb86c" icon="fa-circle-question" />
-              <font-awesome-icon class="status" style="color:#ffb86c" icon="fa-circle-question" />
+            <!-- {{ node.state }} -- {{ node.team?.state }} -->
+            <!-- Universal Unknown state -->
+            <template v-if="!node.state && !node.team?.state">
+              <font-awesome-icon class="status balloon-warn icon-border-warn" icon="fa-circle-question"/>
+              <font-awesome-icon class="status balloon-warn icon-border-warn" icon="fa-circle-question" />
+              <font-awesome-icon class="status balloon-warn icon-border-warn" icon="fa-circle-question" />
             </template>
-            <template v-else>
-              <font-awesome-icon v-if="JSON.parse(node.balloons).b1" class="status" style="color:#ff5555" icon="fa-solid fa-circle" />
-              <font-awesome-icon v-else class="status" style="color:#50fa7b" icon="fa-solid fa-circle" />
 
-              <font-awesome-icon v-if="JSON.parse(node.balloons).b2" class="status" style="color:#ff5555" icon="fa-solid fa-circle" />
-              <font-awesome-icon v-else class="status" style="color:#50fa7b" icon="fa-solid fa-circle" />
+            <!-- Team State but no Node State -->
+            <template v-if="!node.state && node.team?.state">
+              <font-awesome-icon :class="JSON.parse(node.team.state).A ? 'icon-border-danger' : 'icon-border-success'" class="status balloon-warn" icon="fa-circle-question"/>
+              <font-awesome-icon :class="JSON.parse(node.team.state).B ? 'icon-border-danger' : 'icon-border-success'" class="status balloon-warn" icon="fa-circle-question" />
+              <font-awesome-icon :class="JSON.parse(node.team.state).C ? 'icon-border-danger' : 'icon-border-success'" class="status balloon-warn" icon="fa-circle-question" />
+            </template>
 
-              <font-awesome-icon v-if="JSON.parse(node.balloons).b3" class="status" style="color:#ff5555" icon="fa-solid fa-circle" />
-              <font-awesome-icon v-else class="status" style="color:#50fa7b" icon="fa-solid fa-circle" />
-              <!-- <font-awesome-icon class="status" style="color:#50fa7b" icon="fa-solid fa-circle-exclamation" />
-              <font-awesome-icon class="status" style="color:#50fa7b" icon="fa-solid fa-circle-check" /> -->
+            <!-- Node State known but no team -->
+            <template v-else-if="node.state && !node.team?.state">
+              <font-awesome-icon :class="JSON.parse(node.state).A ? 'balloon-danger' : 'balloon-success'" class="status icon-border-warn"  icon="fa-circle-question" />
+              <font-awesome-icon :class="JSON.parse(node.state).B ? 'balloon-danger' : 'balloon-success'" class="status icon-border-warn"  icon="fa-circle-question" />
+              <font-awesome-icon :class="JSON.parse(node.state).C ? 'balloon-danger' : 'balloon-success'" class="status icon-border-warn"  icon="fa-circle-question" />
+            </template>
+            
+            <!-- Node and team state known -->
+            <template v-else-if="node.state && node.team?.state">
+              <font-awesome-icon :class="[(JSON.parse(node.state).A ? 'balloon-danger' : 'balloon-success'), (JSON.parse(node.team.state).A ? 'icon-border-danger' : 'icon-border-success')]" class="status" :icon="JSON.parse(node.state).A === JSON.parse(node.team.state).A ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation'" />
+              <font-awesome-icon :class="[(JSON.parse(node.state).B ? 'balloon-danger' : 'balloon-success'), (JSON.parse(node.team.state).B ? 'icon-border-danger' : 'icon-border-success')]" class="status" :icon="JSON.parse(node.state).B === JSON.parse(node.team.state).B ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation'" />
+              <font-awesome-icon :class="[(JSON.parse(node.state).C ? 'balloon-danger' : 'balloon-success'), (JSON.parse(node.team.state).C ? 'icon-border-danger' : 'icon-border-success')]" class="status" :icon="JSON.parse(node.state).C === JSON.parse(node.team.state).C ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation'" />
             </template>
           </td>
         </tr>
@@ -60,11 +85,12 @@ export default {
             name
             heartbeat
             initialized
+            state
             team {
               id
               name
+              state
             }
-            balloons
           }
         }
       `,
@@ -95,5 +121,32 @@ export default {
     padding: 0.75rem;
     vertical-align: top;
     border-top: 1px solid #34373d !important;
+}
+
+.balloon-warn {
+  color: #ffb86c
+}
+
+.balloon-success {
+  color: #50fa7b
+}
+
+.balloon-danger {
+  color: #ff5555;
+}
+
+.icon-border-warn {
+  border-radius: 50%;
+  border: 2px solid #ffb86c;
+}
+
+.icon-border-success {
+  border-radius: 50%;
+  border: 2px solid #50fa7b;
+}
+
+.icon-border-danger {
+  border-radius: 50%;
+  border: 2px solid #ff5555;
 }
 </style>

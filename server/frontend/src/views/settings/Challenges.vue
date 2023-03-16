@@ -6,7 +6,7 @@
           <h3>Challenges</h3>
         </div>
         <div class="col-2" style="text-align:right;">
-          <button type="button" class="btn btn-outline-danger">ADD +</button>
+          <!-- <button type="button" class="btn btn-outline-danger">ADD +</button> -->
         </div>
       </div>
      <hr>
@@ -24,7 +24,8 @@
             <td>{{ challenge.name }}</td>
             <td>{{ challenge.externalId }}</td>
             <td>{{ challenge.balloon }}</td>
-            <td><button type="button" class="btn btn-outline-danger" @click="confirmDelete(challenge)">X</button></td>
+            <td></td>
+            <!-- <td><button type="button" class="btn btn-outline-danger" @click="confirmDelete(challenge)">X</button></td> -->
           </tr>
         </tbody>
       </table>

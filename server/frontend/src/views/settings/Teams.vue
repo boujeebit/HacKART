@@ -6,7 +6,7 @@
           <h3>Teams</h3>
         </div>
         <div class="col-2" style="text-align:right;">
-          <button type="button" class="btn btn-outline-danger" @click="create()">ADD +</button>
+          <!-- <button type="button" class="btn btn-outline-danger" @click="create()">ADD +</button> -->
         </div>
       </div>
       <hr>

@@ -27,6 +27,17 @@ def heartbeat(request):
         return HttpResponse(status=400)
 
     node.heartbeat = datetime.datetime.now()
+
+    # Node State
+    if 'state' in payload:
+        if 'A' in payload['state'] and 'B' in payload['state'] and 'C' in payload['state']:
+            if type(payload['state']['A']) is bool and type(payload['state']['B']) is bool and type(payload['state']['C']) is bool:
+                node.state = payload['state']
+            else:
+                print("Malformed state object types.")
+        else:
+            print("Malformed state object.")
+
     node.save()
 
     if 'initialized' in payload:

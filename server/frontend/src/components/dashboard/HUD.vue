@@ -19,7 +19,7 @@
         <b-col style="padding: 0;">
           <b-card title="Solves" class="mb-2">
             <b-card-text>
-              --
+              {{ solveCount }}
             </b-card-text>
           </b-card>
         </b-col>
@@ -45,6 +45,13 @@ export default {
       query: gql`
         query{
           teamCount
+        }
+      `
+    },
+    solveCount: {
+      query: gql`
+        query{
+          solveCount
         }
       `
     } 

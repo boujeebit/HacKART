@@ -8,6 +8,14 @@ class TeamType(DjangoObjectType):
     class Meta:
         model = Team
 
+    state = graphene.JSONString()
+    def resolve_state(self, info):
+        state = {'A': False, 'B': False, 'C': False}
+        for solve in self.solves.all():
+            state[solve.challenge.balloon] = True
+        
+        return state
+
 class Query(graphene.ObjectType):
     teams = graphene.List(TeamType)
     team_count = graphene.Int()

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import JsonResponse
 import json, datetime
 
 from identity.models import Integration
@@ -38,15 +39,15 @@ def hook(request, id=None):
     try:
       payload = json.loads(request.body.decode('utf-8'))
     except:
-      return HttpResponse(status=500)
+      return JsonResponse({"message": "The payload provided was malformed."}, status=500)
   else:
-    return HttpResponse(status=400)
+    return JsonResponse({"message": "No payload was provided in request."}, status=400)
     
 
   # Team Build
   if 'team' in payload:
     if 'type' not in payload['team'] or payload['team']['type'].lower() not in ['create', 'update', 'delete']:
-      return HttpResponse(status=400)
+      return JsonResponse({"message": "Payload type must be String of ['create', 'update', 'delete']"}, status=400)
 
     # Create Team
     if payload['team']['type'].lower() == 'create':
@@ -94,36 +95,54 @@ def hook(request, id=None):
   # Solve
   elif 'solve' in payload:
     if 'team' not in payload['solve'] or 'challenge' not in payload['solve']:
-      return HttpResponse(status=400)
+      return JsonResponse({"message": "team or challenge not provided in payload."}, status=400)
 
     try:
       team = Team.objects.get(external_id=payload['solve']['team'])
     except:
-      return HttpResponse(status=404)
+      return JsonResponse({"message": "No team exist with that ID."},status=404)
 
     try:
       challenge = Challenge.objects.get(external_id=payload['solve']['challenge'])
     except:
-      return HttpResponse(status=404)
+      return JsonResponse({"message": "No challenge exist with that ID."}, status=404)
 
     try:
       node = team.node
     except:
-      return HttpResponse(status=500)
+      return HttpResponse({"message": "Team is not assigned to a node."}, status=500)
 
     # Check if node or team has this solve.
+
+    # Check if Team has solved this challenge
+    try:
+      Solve.objects.get(challenge=challenge, team=team)
+      return JsonResponse({"message": "Team already solved this challenge."}, status=500)
+    except:
+      pass
+
+    if node.state:
+      if node.state[challenge.balloon]:
+        return JsonResponse({"message": "Node state for balloon %s is reporting as inactive." % (challenge.balloon)}, status=500)
+      else:
+        print("Ready pop")
+    else:
+      return JsonResponse({"message": "Node is in an unknow state. Cannot complete this request."}, status=500)
+
+    
+
 
     # Send Solve to AWS
 
     try:
-      solve = Solve(challenge=challenge, node=node)
+      solve = Solve(challenge=challenge, team=team)
       solve.save()
-      return HttpResponse(status=200)
+      return JsonResponse({"message": "Success."}, status=200)
     except:
-      return HttpResponse(status=500)
+      return JsonResponse({"message": "Failed to add solved challenge."}, status=500)
 
       
   # If not team or solve
   else:
-    return HttpResponse(status=400)
+    return JsonResponse({"message": "Payload is not a Team or Solve object."}, status=400)
     

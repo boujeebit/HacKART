@@ -134,13 +134,6 @@
                 gateway
                 dns
               }
-              solves {
-                time
-                challenge {
-                  name
-                  balloon
-                }
-              }
             }
           }
         `,

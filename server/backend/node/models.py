@@ -13,7 +13,11 @@ class Node(models.Model):
     heartbeat = models.DateTimeField(null=True, blank=True)
     internval = models.IntegerField(null=True, blank=True)
 
+    state = models.JSONField(null=True, blank=True, default=None)
     team = models.OneToOneField(Team, null=True, blank=True, on_delete=models.SET_NULL, related_name="node")
+
+    def __str__(self) -> str:
+        return self.name
 
 class Network(models.Model):
     mac = models.CharField(max_length=17, unique=True, null=False, blank=False)
@@ -23,4 +27,3 @@ class Network(models.Model):
     dns = models.CharField(max_length=17, null=True, blank=True)
 
     node = models.OneToOneField(Node, on_delete=models.CASCADE, related_name="networking")
-    # node = models.ForeignKey(Team, null=False, blank=False, on_delete=models.CASCADE, related_name="networking")
