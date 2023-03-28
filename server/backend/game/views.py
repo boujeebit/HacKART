@@ -138,7 +138,9 @@ def hook(request, id=None):
           return JsonResponse({"message": "No broker configured."}, status=500)
         
         publish_url = 'https://%s:%i/topics/hackart/%s?qos=1' % (broker.endpoint, broker.port, node.id)
-        publish_msg = {"type": "pop", "state": node.state}
+        new_state = node.state
+        new_state[challenge.balloon] = True
+        publish_msg = {"type": "pop", "state": new_state}
 
         publish = requests.request('POST',
           publish_url,
