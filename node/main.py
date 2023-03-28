@@ -78,14 +78,36 @@ else:
 led = machine.Pin(16, machine.Pin.OUT)
 led.off()
 
+# Load state
+try:
+  print("[+] Loading state file")
+  state_file = open('config.json', 'rb')
+  state = json.loads(state_file.read())
+  if 'A' in state and 'B' in state and 'C' in state:
+    if type(state['A']) is bool and type(state['B']) is bool and type(state['C']) is bool:
+      print("[+] State file loaded.")
+    else:
+      print("[-] Malformed state data. Starting fresh..")
+      state = {"A": False, "B": False, "C": False}
+except:
+  print("[-] Failed to load state file. Starting fresh..")
+  state = {"A": False, "B": False, "C": False}
+
+
+
 # Initial Hello
-msg = {'MID': ubinascii.hexlify(machine.unique_id()), 'network': station.ifconfig()}
-client.publish( topic='testing/test', msg=json.dumps(msg) )
+print("[-] Sending startup heartbeat.")
+msg = {'id': config['id'], 'state': state, 'initialized': { 'mid': ubinascii.hexlify(machine.unique_id()), 'interface': { 'mac': '', 'lease': station.ifconfig() }, 'heartbeat': { 'enabled': True, 'interval': 60 } } }
+client.publish( topic='hackart/heartbeat', msg=json.dumps(msg) )
+print("[+] Startup heartbeat sent.")
+
+
+
 
 print("\n\n[+] Starting normal operations..\n")
 while True:
   try:
-    msg= { 'id' : config['id'] }
+    msg= { 'id' : config['id'], 'state': state }
     # client.publish( topic='hackart/heartbeat', msg=json.dumps(msg) )
     print(msg)
     # new_message = client.check_msg()
