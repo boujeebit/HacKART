@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1af1ab1e-64cb-46da-9054-7bb0911f8692",
+    "state": { "A": false, "B": false, "C": false },
+    "heartbeat": { "interval": 60, "last": 1679424482.654066 }
+  },
+  {
+    "id": "7abb2fe4-42d1-44cf-a856-80a66bc2833d",
+    "state": { "A": false, "B": false, "C": false },
+    "heartbeat": { "interval": 60, "last": null }
+  },
+  {
+    "id": "d9a0275a-57d0-4d5c-9236-4f2b505c42f9",
+    "state": { "A": false, "B": false, "C": false },
+    "heartbeat": { "interval": 60, "last": null }
+  },
+  {
+    "id": "3ac96bf0-385d-41e9-a728-80a14c66da0f",
+    "state": { "A": false, "B": false, "C": false },
+    "heartbeat": { "interval": 60, "last": null }
+  }
+]

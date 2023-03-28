@@ -46,23 +46,23 @@
 
             <!-- Team State but no Node State -->
             <template v-if="!node.state && node.team?.state">
-              <font-awesome-icon :class="JSON.parse(node.team.state).A ? 'icon-border-danger' : 'icon-border-success'" class="status balloon-warn" icon="fa-circle-question"/>
-              <font-awesome-icon :class="JSON.parse(node.team.state).B ? 'icon-border-danger' : 'icon-border-success'" class="status balloon-warn" icon="fa-circle-question" />
-              <font-awesome-icon :class="JSON.parse(node.team.state).C ? 'icon-border-danger' : 'icon-border-success'" class="status balloon-warn" icon="fa-circle-question" />
+              <font-awesome-icon :class="JSON.parse(node.team.state).A ? 'icon-border-success' : 'icon-border-danger'" class="status balloon-warn" icon="fa-circle-question"/>
+              <font-awesome-icon :class="JSON.parse(node.team.state).B ? 'icon-border-success' : 'icon-border-danger'" class="status balloon-warn" icon="fa-circle-question" />
+              <font-awesome-icon :class="JSON.parse(node.team.state).C ? 'icon-border-success' : 'icon-border-danger'" class="status balloon-warn" icon="fa-circle-question" />
             </template>
 
             <!-- Node State known but no team -->
             <template v-else-if="node.state && !node.team?.state">
-              <font-awesome-icon :class="JSON.parse(node.state).A ? 'balloon-danger' : 'balloon-success'" class="status icon-border-warn"  icon="fa-circle-question" />
-              <font-awesome-icon :class="JSON.parse(node.state).B ? 'balloon-danger' : 'balloon-success'" class="status icon-border-warn"  icon="fa-circle-question" />
-              <font-awesome-icon :class="JSON.parse(node.state).C ? 'balloon-danger' : 'balloon-success'" class="status icon-border-warn"  icon="fa-circle-question" />
+              <font-awesome-icon :class="JSON.parse(node.state).A ? 'balloon-success' : 'balloon-danger'" class="status icon-border-warn"  icon="fa-circle-question" />
+              <font-awesome-icon :class="JSON.parse(node.state).B ? 'balloon-success' : 'balloon-danger'" class="status icon-border-warn"  icon="fa-circle-question" />
+              <font-awesome-icon :class="JSON.parse(node.state).C ? 'balloon-success' : 'balloon-danger'" class="status icon-border-warn"  icon="fa-circle-question" />
             </template>
             
             <!-- Node and team state known -->
             <template v-else-if="node.state && node.team?.state">
-              <font-awesome-icon :class="[(JSON.parse(node.state).A ? 'balloon-danger' : 'balloon-success'), (JSON.parse(node.team.state).A ? 'icon-border-danger' : 'icon-border-success')]" class="status" :icon="JSON.parse(node.state).A === JSON.parse(node.team.state).A ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation'" />
-              <font-awesome-icon :class="[(JSON.parse(node.state).B ? 'balloon-danger' : 'balloon-success'), (JSON.parse(node.team.state).B ? 'icon-border-danger' : 'icon-border-success')]" class="status" :icon="JSON.parse(node.state).B === JSON.parse(node.team.state).B ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation'" />
-              <font-awesome-icon :class="[(JSON.parse(node.state).C ? 'balloon-danger' : 'balloon-success'), (JSON.parse(node.team.state).C ? 'icon-border-danger' : 'icon-border-success')]" class="status" :icon="JSON.parse(node.state).C === JSON.parse(node.team.state).C ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation'" />
+              <font-awesome-icon :class="[(JSON.parse(node.state).A ? 'balloon-success' : 'balloon-danger'), (JSON.parse(node.team.state).A ? 'icon-border-success' : 'icon-border-danger')]" class="status" :icon="JSON.parse(node.state).A === JSON.parse(node.team.state).A ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation'" />
+              <font-awesome-icon :class="[(JSON.parse(node.state).B ? 'balloon-success' : 'balloon-danger'), (JSON.parse(node.team.state).B ? 'icon-border-success' : 'icon-border-danger')]" class="status" :icon="JSON.parse(node.state).B === JSON.parse(node.team.state).B ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation'" />
+              <font-awesome-icon :class="[(JSON.parse(node.state).C ? 'balloon-success' : 'balloon-danger'), (JSON.parse(node.team.state).C ? 'icon-border-success' : 'icon-border-danger')]" class="status" :icon="JSON.parse(node.state).C === JSON.parse(node.team.state).C ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation'" />
             </template>
           </td>
         </tr>
