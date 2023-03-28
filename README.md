@@ -44,3 +44,5 @@ If you enable client heartbeats the control server will get messages from the No
     "id": "nodeid"
 }
 ```
+
+rshell --port /dev/tty.usbserial-0001 --baud 115200

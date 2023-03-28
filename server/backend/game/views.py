@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
-import json, datetime
+import json, datetime, requests
 
 from identity.models import Integration
 # from node.models import Node, Network
 from team.models import Team
 from game.models import Challenge, Solve
+from identity.models import Broker
 
 '''
 localhost:8000/plaform/hook
@@ -126,13 +127,30 @@ def hook(request, id=None):
         return JsonResponse({"message": "Node state for balloon %s is reporting as inactive." % (challenge.balloon)}, status=500)
       else:
         print("Ready pop")
+
+        # Send command to AWS
+        try:
+          broker = Broker.objects.all().first()
+        except:
+          return JsonResponse({"message": "No broker configured."}, status=500)
+        
+        if not broker:
+          return JsonResponse({"message": "No broker configured."}, status=500)
+        
+        publish_url = 'https://%s:%i/topics/hackart/%s?qos=1' % (broker.endpoint, broker.port, node.id)
+        publish_msg = {"type": "pop", "state": node.state}
+
+        publish = requests.request('POST',
+          publish_url,
+          data=json.dumps(publish_msg),
+          cert=['/root/certificate.pem.crt', '/root/private.pem.key'])
+
+        if publish.status_code != 200:
+          return JsonResponse({"message": "Error with request to AWS."}, status=500)
+
     else:
       return JsonResponse({"message": "Node is in an unknow state. Cannot complete this request."}, status=500)
 
-    
-
-
-    # Send Solve to AWS
 
     try:
       solve = Solve(challenge=challenge, team=team)

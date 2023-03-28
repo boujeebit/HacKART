@@ -20,7 +20,6 @@ class IntegrationObj(DjangoObjectType):
 class Query(object):
     identity = graphene.Field(IdentityObj)
     integrations = graphene.List(IntegrationObj)
-    blinky = graphene.Boolean()
 
     def resolve_identity(self, info):
         validate_user_is_authenticated(info.context.user)
@@ -31,27 +30,6 @@ class Query(object):
         validate_user_is_authenticated(info.context.user)
 
         return Integration.objects.all()
-
-    # Test blink of ESP 
-    def resolve_blinky(self, info):
-        validate_user_is_authenticated(info.context.user)
-
-        try:
-            broker = Broker.objects.all().first()
-        except:
-            return False
-        publish_url = 'https://%s:%i/topics/hackart/init?qos=1' % (broker.endpoint, broker.port)
-        publish_msg = "Hello from HacKART terminal"
-
-        publish = requests.request('POST',
-            publish_url,
-            data=publish_msg,
-            cert=['', ''])
-
-        if publish.status_code == 200:
-            return True
-        else:
-            return False
 
 class LogIn(graphene.Mutation):
     id = graphene.Int()

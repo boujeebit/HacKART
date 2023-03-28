@@ -9,8 +9,8 @@ Replace *.*.com with your FQDN.
 For development purposes.
 
 ```
-openssl req -x509 -newkey rsa:4096 -sha256 -days 365 -nodes \                                                                                                     √ / 10:16:59 
-  -keyout server.key -out server.crt -subj "/CN=*.*.com
+openssl req -x509 -newkey rsa:4096 -sha256 -days 365 -nodes -keyout server.key -out server.crt -subj "/CN=*.*.com
+openssl req -x509 -newkey rsa:4096 -sha256 -days 365 -nodes -keyout server.key -out server.crt
 ```
 
 

@@ -6,10 +6,11 @@
         <h3>Node ({{ node.name }})</h3>
       </div>
       <div class="col-2" style="text-align:right;">
-        <button type="button" class="btn btn-outline-danger" @click="blinky()">Blinky</button>
+
+        <!-- <button type="button" class="btn btn-outline-danger" @click="blinky()">Blinky</button>
         <br>
         <span v-if="blinky_data.running">Command Sent</span>
-        <span v-if="blinky_data.result">Result: {{ blinky_data.result }}</span>
+        <span v-if="blinky_data.result">Result: {{ blinky_data.result }}</span> -->
 
       </div>
     </div>
@@ -146,22 +147,22 @@
       }
     },
     methods: {
-      blinky() {
-        this.blinky_data.result = null
-        this.blinky_data.running = true
-        let self = this
-        this.$apollo.query({
-          query: gql`
-            query {
-              blinky
-            }
-          `
-        }).then((data) => {
-          console.log(data.data)
-          self.blinky_data.running = false
-          self.blinky_data.result = data.data.blinky
-        })
-      }
+      // blinky() {
+      //   this.blinky_data.result = null
+      //   this.blinky_data.running = true
+      //   let self = this
+      //   this.$apollo.query({
+      //     query: gql`
+      //       query {
+      //         blinky
+      //       }
+      //     `
+      //   }).then((data) => {
+      //     console.log(data.data)
+      //     self.blinky_data.running = false
+      //     self.blinky_data.result = data.data.blinky
+      //   })
+      // }
     }
   };
 </script>

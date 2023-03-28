@@ -10,8 +10,6 @@ import gc
 gc.collect()
 
 print("\n\n\n")
-print("[-] Holding 5 seconds for REPL")
-time.sleep(5)
 
 try:
   config_file = open('config.json', 'rb')
