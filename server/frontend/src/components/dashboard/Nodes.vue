@@ -25,8 +25,8 @@
               <font-awesome-icon class="balloon-warn" icon="fa-solid fa-triangle-exclamation"/>
             </template>
             <template v-else-if="node.team?.state">
-              <font-awesome-icon v-if="node.state !== node.team.state" class="balloon-danger" icon="fa-solid fa-triangle-exclamation"/>
-              <font-awesome-icon v-else class="balloon-success" icon="fa-solid fa-square-check"/>
+              <font-awesome-icon v-if="JSON.parse(node.state).A === JSON.parse(node.team.state).A && JSON.parse(node.state).B === JSON.parse(node.team.state).B && JSON.parse(node.state).C === JSON.parse(node.team.state).C" class="balloon-success" icon="fa-solid fa-square-check"/>
+              <font-awesome-icon v-else class="balloon-danger" icon="fa-solid fa-triangle-exclamation"/>
             </template>
           </td>
           <td v-b-tooltip.hover.left :title="'UUID: '+node.id">{{node.name}}</td>
@@ -94,7 +94,7 @@ export default {
           }
         }
       `,
-      // pollInterval: 5000
+      pollInterval: 5000
     } 
   },
 
