@@ -56,11 +56,11 @@ def hook(request, id=None):
         try:
           team = Team(external_id=payload['team']['id'], name=payload['team']['name'], integration=integration)
           team.save()
-          return HttpResponse(status=200)
+          return JsonResponse({"message": "Success."},status=200)
         except:
-          return HttpResponse(status=500)
+          return JsonResponse({"message": "Failed to create team locally."},status=500)
       else:
-        return HttpResponse(status=400)
+        return JsonResponse({"message": "Invalid team create payload."},status=400)
 
     # Update Team
     if payload['team']['type'].lower() == 'update':
@@ -73,11 +73,11 @@ def hook(request, id=None):
         try:
           team.name = payload['team']['name']
           team.save()
-          return HttpResponse(status=200)
+          return JsonResponse({"message": "Success."},status=200)
         except:
-          return HttpResponse(status=500)
+          return JsonResponse({"message": "Failed to update team locally."},status=500)
       else:
-        return HttpResponse(status=400)
+        return JsonResponse({"message": "Invalid team update payload."},status=400)
 
     # Delete Team
     if payload['team']['type'].lower() == 'delete':
@@ -85,13 +85,13 @@ def hook(request, id=None):
         try:
           team = Team.objects.get(external_id=payload['team']['id'])
         except:
-          return HttpResponse(status=404)
+          return JsonResponse({"message": "No team found with provided ID."},status=404)
 
         try:
           team.delete()
-          return HttpResponse(status=200)
+          return JsonResponse({"message": "Success."},status=200)
         except:
-          return HttpResponse(status=500)
+          return JsonResponse({"message": "Invalid team delete payload."},status=400)
 
   # Solve
   elif 'solve' in payload:

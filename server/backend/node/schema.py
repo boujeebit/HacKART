@@ -5,6 +5,8 @@ from identity.validator import validate_user_is_authenticated
 from node.models import Node, Network
 from team.models import Team
 
+import identity.aws as aws
+
 class NodeType(DjangoObjectType):
     class Meta:
         model = Node
@@ -17,6 +19,7 @@ class Query(graphene.ObjectType):
     node = graphene.Field(NodeType, id=graphene.String(required=True))
     nodes = graphene.List(NodeType)
     node_count = graphene.Int()
+    sync = graphene.Boolean(id=graphene.String(required=True), action=graphene.String(required=True), a=graphene.Boolean(), b=graphene.Boolean(), c=graphene.Boolean())
 
     def resolve_node(self, info, id):
         validate_user_is_authenticated(info.context.user)
@@ -32,6 +35,26 @@ class Query(graphene.ObjectType):
         validate_user_is_authenticated(info.context.user)
         
         return Node.objects.all().count()
+    
+    def resolve_sync(self, info, id, action, a=None, b=None, c=None):
+        validate_user_is_authenticated(info.context.user)
+        try:
+            node = Node.objects.get(id=id)
+        except:
+            raise Exception("Node with ID does not exist.")
+        
+        # print(node.state)
+        if a:
+            node.state['A'] = a
+        if b: 
+            node.state['B'] = b
+        if c:
+            node.state['C'] = c
+        # print(id, a, b, c)
+        # print(node.state)
+
+        aws.publish(id, action, node.state)
+        return True
 
 class NodeMutation(graphene.Mutation):
     message = graphene.String()

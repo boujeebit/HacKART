@@ -21,6 +21,7 @@ class Node(models.Model):
 
 class Network(models.Model):
     mac = models.CharField(max_length=17, unique=True, null=False, blank=False)
+    ssid = models.CharField(max_length=64, null=True, blank=True)
     address = models.CharField(max_length=17, null=True, blank=True)
     subnet  = models.CharField(max_length=17, null=True, blank=True)
     gateway = models.CharField(max_length=17, null=True, blank=True)

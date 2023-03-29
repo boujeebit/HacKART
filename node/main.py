@@ -153,6 +153,9 @@ while True:
   try:
     for x in range(60):
       new_message = client.check_msg()
+      if new_message:
+        #Break to do a heartbeat
+        break
       time.sleep(1)
 
     msg= { 'id' : config['id'], 'state': state }
