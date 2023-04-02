@@ -43,17 +43,16 @@ class Query(graphene.ObjectType):
         except:
             raise Exception("Node with ID does not exist.")
         
-        # print(node.state)
-        if a:
-            node.state['A'] = a
-        if b: 
-            node.state['B'] = b
-        if c:
-            node.state['C'] = c
-        # print(id, a, b, c)
-        # print(node.state)
+        sync_state = node.state
+        if a != None:
+            sync_state['A'] = a
+        if b != None: 
+            sync_state['B'] = b
+        if c != None:
+            sync_state['C'] = c
 
-        aws.publish(id, action, node.state)
+        # TODO! If abc false no message happens.
+        aws.publish(id, action, sync_state)
         return True
 
 class NodeMutation(graphene.Mutation):

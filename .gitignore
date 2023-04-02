@@ -3,11 +3,11 @@
 #
 
 # Ignore the certificate folder so not keys accidentally get pushed.
-node/certs/*
+node/fs/certs/*
 # Allow the readme documentation to get pushed.
-!node/certs/README.md
+!node/fs/certs/README.md
 # Ignore the config.json file if one.
-node/config.json
+node/fs/config.json
 
 # Ignore sensitive directories
 server/certs

@@ -3,18 +3,34 @@
     <div style="margin-top:15px;">
     <div class="row">
       <div class="col-10">
-        <h3>Node ({{ node.name }})</h3>
+        <h3>Node ({{ node?.name }})</h3>
       </div>
       <div class="col-2" style="text-align:right;">
-
-        <!-- <button type="button" class="btn btn-outline-danger" @click="blinky()">Blinky</button>
-        <br>
-        <span v-if="blinky_data.running">Command Sent</span>
-        <span v-if="blinky_data.result">Result: {{ blinky_data.result }}</span> -->
-
+        <button type="button" class="btn btn-outline-danger" @click="showSync = !showSync">Sync</button>
       </div>
     </div>
     
+    <div v-if="showSync" style="margin-bottom: 45px;">
+      <h6>Sync</h6>
+      <b-form inline>
+        <b-form-select
+          id="inline-form-custom-select-pref"
+          class="mb-2 mr-sm-2 mb-sm-0"
+          :options="[{ text: 'Type...', value: null }, { text: 'Pop', value: 'pop' }, { text: 'Sync', value: 'sync' }]"
+          :value="null"
+          v-model="syncData.type"
+        ></b-form-select>
+
+        <b-form-group>
+          <b-form-checkbox-group
+            v-model="syncData.selected"
+            :options="syncData.options"
+            switches
+          ></b-form-checkbox-group>
+        </b-form-group>
+      </b-form>
+      <b-button variant="primary" @click="sync()">Send</b-button>
+    </div>
 
     <fieldset class="scheduler-border">
       <legend class="scheduler-border">Node</legend>
@@ -61,6 +77,10 @@
             <td>{{node.networking?.mac}}</td>
           </tr>
           <tr>
+            <td>SSID</td>
+            <td>{{node.networking?.ssid}}</td>
+          </tr>
+          <tr>
             <td>IP Address</td>
             <td>{{node.networking?.address}}</td>
           </tr>
@@ -79,14 +99,6 @@
         </tbody>
       </table>
     </div>
-    </fieldset>
-
-
-    <fieldset class="scheduler-border">
-      <legend class="scheduler-border">Solves</legend>
-      <div v-for="solve in node.solves" :key="solve.id">
-        {{ solve.challenge.name }} // {{ solve.time }} //{{ solve.challenge.balloon }}
-      </div>
     </fieldset>
     <br>
     <br>
@@ -110,9 +122,15 @@
     },
     data() {
       return {
-        blinky_data: {
-          running: false,
-          result: null
+        showSync: false,
+        syncData: {
+          type: null,
+          selected: [],
+          options: [
+            { text: 'A', value: 'A' },
+            { text: 'B', value: 'B' },
+            { text: 'C', value: 'C' }
+          ]
         }
       }
     },
@@ -129,6 +147,7 @@
               heartbeat
               internval
               networking {
+                ssid
                 mac
                 address
                 subnet
@@ -143,26 +162,40 @@
             "id": this.$props.id
           }
         },
-        pollInterval: 5000
+        // pollInterval: 5000
       }
     },
     methods: {
-      // blinky() {
-      //   this.blinky_data.result = null
-      //   this.blinky_data.running = true
-      //   let self = this
-      //   this.$apollo.query({
-      //     query: gql`
-      //       query {
-      //         blinky
-      //       }
-      //     `
-      //   }).then((data) => {
-      //     console.log(data.data)
-      //     self.blinky_data.running = false
-      //     self.blinky_data.result = data.data.blinky
-      //   })
-      // }
+      sync() {
+        let a, b, c = false
+
+        for (let i = 0; i < this.syncData.selected.length ; i++) {
+          if (this.syncData.selected[i] === 'A') {
+            a = true
+          } else if (this.syncData.selected[i] === 'B') {
+            b = true
+          } else if (this.syncData.selected[i] === 'C') {
+            c = true
+          }
+        }
+        let self = this
+          this.$apollo.query({
+            query: gql`
+              query($id: String!, $action: String!, $a: Boolean, $b: Boolean, $c: Boolean ) {
+                sync(id: $id, action: $action, a: $a, b: $b, c: $c)
+              }
+            `,
+            variables: {
+              "id": this.node.id,
+              "action": this.syncData.type,
+              "a": a,
+              "b": b,
+              "c": c
+            },
+          }).then((data) => {
+            console.log(data.data)
+          })
+      }
     }
   };
 </script>
