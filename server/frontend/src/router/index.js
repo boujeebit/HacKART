@@ -44,6 +44,12 @@ const routes = [
             name: "Setting_Keys",
             component: () => import("@/views/settings/Keys")
           },
+          {
+            path: "logs/:id",
+            name: "Setting_Logs",
+            props: true,
+            component: () => import("@/views/settings/Logs")
+          }
         ]
       },
       {

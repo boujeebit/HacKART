@@ -2,7 +2,7 @@ import graphene
 from graphene_django import DjangoObjectType
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from identity.models import Integration, Broker
+from identity.models import Integration, Broker, Log
 
 from identity.validator import validate_user_is_authenticated
 import requests
@@ -17,9 +17,14 @@ class IntegrationObj(DjangoObjectType):
         model = Integration
         exclude_fields = ('key',)
 
+class LogObj(DjangoObjectType):
+    class Meta:
+        model = Log
+
 class Query(object):
     identity = graphene.Field(IdentityObj)
     integrations = graphene.List(IntegrationObj)
+    logs = graphene.List(LogObj, id=graphene.String(required=True))
 
     def resolve_identity(self, info):
         validate_user_is_authenticated(info.context.user)
@@ -30,6 +35,16 @@ class Query(object):
         validate_user_is_authenticated(info.context.user)
 
         return Integration.objects.all()
+    
+    def resolve_logs(self, info, id):
+        validate_user_is_authenticated(info.context.user)
+
+        try:
+            integration = Integration.objects.get(id=id)
+        except:
+            raise Exception("Integration not found.")
+
+        return Log.objects.filter(integration=integration)
 
 class LogIn(graphene.Mutation):
     id = graphene.Int()

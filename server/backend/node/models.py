@@ -16,6 +16,7 @@ class Node(models.Model):
     state = models.JSONField(null=True, blank=True, default=None)
     team = models.OneToOneField(Team, null=True, blank=True, on_delete=models.SET_NULL, related_name="node")
 
+
     def __str__(self) -> str:
         return self.name
 
@@ -28,3 +29,12 @@ class Network(models.Model):
     dns = models.CharField(max_length=17, null=True, blank=True)
 
     node = models.OneToOneField(Node, on_delete=models.CASCADE, related_name="networking")
+
+class ROM(models.Model):
+    key = models.CharField(max_length=64, null=True, blank=True)
+
+class Player(models.Model):
+    player = models.CharField(max_length=2, choices=[('P1', 'P1'), ('P3', 'P2'), ('P3', 'P3'), ('P4', 'P4')])
+
+    rom = models.ForeignKey(ROM, null=False, on_delete=models.CASCADE, related_name="players")
+    node = models.OneToOneField(Node, on_delete=models.CASCADE, related_name="player")

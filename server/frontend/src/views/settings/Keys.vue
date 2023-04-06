@@ -44,7 +44,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="integration in integrations" :key="integration.id">
+          <tr v-for="integration in integrations" :key="integration.id" @click="$router.push({ name: 'Setting_Logs', params: {id: integration.id} })" style="cursor: pointer;">
             <td>{{ integration.type }}</td>
             <td>{{ integration.name }}</td>
             <td>{{ integration.id }}</td>

@@ -16,6 +16,15 @@ class Integration(models.Model):
     def __str__(self):
         return self.name
 
+# Logs
+class Log(models.Model):
+    code = models.IntegerField(null=False, blank=False)
+    message = models.CharField(max_length=128, null=False, blank=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    source = models.CharField(max_length=64, null=True, blank=True)
+    integration = models.ForeignKey(Integration, on_delete=models.CASCADE, related_name="logs")
+
 # Used for MQTT connection
 class Broker(models.Model):
     endpoint = models.CharField(max_length=256, null=False, blank=False)
