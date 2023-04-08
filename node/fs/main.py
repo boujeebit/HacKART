@@ -2,6 +2,9 @@ from umqtt.simple import MQTTClient
 import os, machine, sys, ubinascii
 import time, json
 
+if boot_failure is True:
+  sys.exit()
+
 # Init the default state and heartbeat
 state = {'A': False, 'B': False, 'C': False}
 heartbeat = 0

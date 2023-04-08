@@ -1,9 +1,10 @@
-import os, esp, gc, sys, ubinascii, machine, network, json
+import os, esp, gc, sys, ubinascii, machine, network, json, time
 
 esp.osdebug(None)
 gc.collect()
 
-version = "1.1"
+version = "1.2"
+boot_failure = False
 # Padding for REPL restart
 print("\n\n")
 
@@ -25,6 +26,7 @@ try:
   os.stat('config.json')
 except OSError:
   print("[!] No 'config.json' file on board.")
+  boot_failure = True
   sys.exit()
 
 with open("config.json", 'r') as config_file:
@@ -34,10 +36,12 @@ with open("config.json", 'r') as config_file:
     raise
   except Exception as error:
     print("[!] Unable to read 'config.json' file.")
+    boot_failure = True
     sys.exit()
 
 if not validate_config(config):
   print("[!] Configuration file is not properly formated.")
+  boot_failure = True
   sys.exit()
 
 # Ensure Certificates are on filesystem
@@ -45,12 +49,14 @@ try:
   os.stat('certs/'+config['mqtt']['ssl']['certificate'])
 except OSError:
   print("[!] Certificate '%s' was not found in the cert/ directory." % ( config['mqtt']['ssl']['certificate'] ) )
+  boot_failure = True
   sys.exit()
 
 try:
   os.stat('certs/'+config['mqtt']['ssl']['key'])
 except OSError:
   print("[!] Private key '%s' was not found in the cert/ directory." % ( config['mqtt']['ssl']['certificate'] ) )
+  boot_failure = True
   sys.exit()
 
 # Init station
@@ -64,7 +70,7 @@ station.active(True)
 station.connect(config['network']['ssid'], config['network']['password'])
 
 print("[-] Attempting network connection.\n ↳ SSID: %s" % (config['network']['ssid']))
-while station.isconnected() == False:
+while not station.isconnected():
   pass
 
 print("[+] Network connection successful.")
