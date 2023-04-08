@@ -33,7 +33,10 @@
           <td>{{node.team?.name}}</td>
           <td v-if="node.initialized">{{node.initialized | moment("MMM Do YYYY, h:mm:ss a") }}</td>
           <td v-else><i>Never seen...</i></td>
-          <td v-if="node.heartbeat">{{node.heartbeat | moment("MMM Do YYYY, h:mm:ss a") }}</td>
+          <td v-if="node.heartbeat">
+            <span v-if="node.zombie" class="balloon-danger">{{node.heartbeat | moment("MMM Do YYYY, h:mm:ss a") }}</span>
+            <span v-else>{{node.heartbeat | moment("MMM Do YYYY, h:mm:ss a") }}</span>
+          </td>
           <td v-else><i>Never seen...</i></td>
           <td style="text-align: right;">
             <!-- {{ node.state }} -- {{ node.team?.state }} -->
@@ -84,6 +87,7 @@ export default {
             id
             name
             heartbeat
+            zombie
             initialized
             state
             team {

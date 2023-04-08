@@ -8,6 +8,7 @@ node/fs/certs/*
 !node/fs/certs/README.md
 # Ignore the config.json file if one.
 node/fs/config.json
+node/config.py
 
 # Ignore sensitive directories
 server/certs

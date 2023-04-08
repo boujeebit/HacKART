@@ -9,7 +9,7 @@ boot_failure = False
 print("\n\n")
 
 def validate_config(config):
-  if 'id' not in config or 'network' not in config or 'mqtt' not in config or 'heartbeat' not in config:
+  if 'id' not in config or 'network' not in config or 'mqtt' not in config:
     return False
   if 'ssid' not in config['network'] or 'password' not in config['network']:
     return False
@@ -17,10 +17,26 @@ def validate_config(config):
     return False
   if 'certificate' not in config['mqtt']['ssl'] or 'key' not in config['mqtt']['ssl']:
     return False
-  if 'enabled' not in config['heartbeat']:
-    return False
-    
+
+  # Validate Heartbeat // Not a required object.
+  if 'heartbeat' in config:
+    if 'enabled' not in config['heartbeat'] or type(config['heartbeat']['enabled']) is not bool:
+      return False
+    if 'interval' in config['heartbeat'] and type(config['heartbeat']['interval']) is not int:
+      return False
+
   return True
+
+def determine_heartbeat(config):
+  if 'heartbeat' in config:
+    if config['heartbeat']['enabled'] and 'interval' in config['heartbeat']:
+      return config['heartbeat']
+    else:
+      return {'enabled': False, 'interval': None}
+
+  #  Default
+  else:
+    return {'enabled': True, 'interval': 60}
 
 try:
   os.stat('config.json')
@@ -43,6 +59,9 @@ if not validate_config(config):
   print("[!] Configuration file is not properly formated.")
   boot_failure = True
   sys.exit()
+
+# Standardize heartbeart data
+config['heartbeat'] = determine_heartbeat(config)
 
 # Ensure Certificates are on filesystem
 try:

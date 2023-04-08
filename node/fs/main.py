@@ -54,7 +54,7 @@ def sub_cb(topic, msg):
   elif msg['type'] == 'sync':
     print(" ↳ Sync requested. New state: ", msg['state'])
     for x in msg['state']:
-      if msg['state'][x] is False and msg['state'][x] != state[x]:
+      if msg['state'][x] is False:
         if x == 'A':
           r1.value(0)
         if x == 'B':
@@ -128,18 +128,23 @@ except Exception as error:
 
 # Initial Hello
 print("[-] Sending startup heartbeat.")
-msg = {'id': config['id'], 'state': state, 'initialized': { 'mid': ubinascii.hexlify(machine.unique_id()), 'interface': { 'ssid': config['network']['ssid'], 'mac': ubinascii.hexlify(station.config('mac'),':').decode(), 'lease': station.ifconfig() }, 'heartbeat': { 'enabled': True, 'interval': 60 } } }
+msg = {'id': config['id'], 'state': state, 'initialized': { 'mid': ubinascii.hexlify(machine.unique_id()), 'interface': { 'ssid': config['network']['ssid'], 'mac': ubinascii.hexlify(station.config('mac'),':').decode(), 'lease': station.ifconfig() }, 'heartbeat': { 'enabled': config['heartbeat']['enabled'], 'interval': config['heartbeat']['interval'] } } }
 client.publish( topic='hackart/heartbeat', msg=json.dumps(msg) )
 print("[+] Startup heartbeat sent.")
 
 # Start main listening loop.
 print("\n\n[+] Starting normal operations..\n")
-heartbeat = time.ticks_add(time.ticks_ms(), 60*1000)
+
+if config['heartbeat']['enabled']:
+  heartbeat = time.ticks_add(time.ticks_ms(), config['heartbeat']['interval']*1000)
+else:
+  heartbeat = 0
+
 while True:
-  if time.ticks_diff(heartbeat, time.ticks_ms()) < 0:
+  if config['heartbeat']['enabled'] and time.ticks_diff(heartbeat, time.ticks_ms()) < 0:
     client.publish( topic='hackart/heartbeat', msg=json.dumps({'id' : config['id'], 'state': state}) )
     print("[+] Heartbeart: ", state)
-    heartbeat = time.ticks_add(time.ticks_ms(), 60*1000)
+    heartbeat = time.ticks_add(time.ticks_ms(), config['heartbeat']['interval']*1000)
 
   try:
     client.check_msg()

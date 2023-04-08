@@ -1,4 +1,6 @@
 import graphene, datetime
+from datetime import timedelta
+from django.utils import timezone
 from graphene_django import DjangoObjectType
 from identity.validator import validate_user_is_authenticated
 
@@ -10,6 +12,16 @@ import identity.aws as aws
 class NodeType(DjangoObjectType):
     class Meta:
         model = Node
+
+    zombie = graphene.Boolean()
+
+    def resolve_zombie(self, info):
+        expected = self.heartbeat + timedelta(seconds=(self.internval*5))
+        if timezone.now() > expected:
+            return True
+        else:
+            return False
+        
 
 class NetworkType(DjangoObjectType):
     class Meta:
