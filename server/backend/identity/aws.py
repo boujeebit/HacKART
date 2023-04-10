@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from identity.models import Broker
 from node.models import Node
 
@@ -26,7 +31,7 @@ def publish(id, action, state):
   publish = requests.request('POST',
     publish_url,
     data=json.dumps(publish_msg),
-    cert=['/root/certificate.pem.crt', '/root/private.pem.key'])
+    cert=[os.environ.get('AWS_CRT'), os.environ.get('AWS_KEY')])
   
   if publish.status_code != 200:
     raise Exception("None 200 code from AWS IoT.")

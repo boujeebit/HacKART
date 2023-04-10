@@ -56,6 +56,7 @@ def heartbeat(request):
 
         try:
             networking = node.networking
+            networking.ssid = payload['initialized']['interface']['ssid']
             networking.mac = payload['initialized']['interface']['mac']
             networking.address = payload['initialized']['interface']['lease'][0]
             networking.subnet = payload['initialized']['interface']['lease'][1]

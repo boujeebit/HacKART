@@ -1,7 +1,8 @@
 <template>
-<body class="text-center">
+<body class="text-center"> 
   <form class="form-signin" method="post">
-    <img class="mb-4" src="" alt height="125" />
+    <!-- <img class="mb-4" src="" alt height="125" /> -->
+    <h1 style="color: white;">HacKART</h1>
     <hr>
     {{message}}
     <!-- <p>Your username and password didn't match. Please try again.</p> -->
@@ -53,12 +54,13 @@ export default {
 </script>
 
 <style scoped>
-html,
-body {
+html {
+  background-color: #17191f;
   height: 100%;
 }
 
 body {
+  background-color: #17191f;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-align: center;

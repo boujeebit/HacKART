@@ -31,7 +31,7 @@ class Query(graphene.ObjectType):
     node = graphene.Field(NodeType, id=graphene.String(required=True))
     nodes = graphene.List(NodeType)
     node_count = graphene.Int()
-    sync = graphene.Boolean(id=graphene.String(required=True), action=graphene.String(required=True), a=graphene.Boolean(), b=graphene.Boolean(), c=graphene.Boolean())
+    sync = graphene.Boolean(id=graphene.String(required=True), action=graphene.String(required=True), enforce=graphene.Boolean(), a=graphene.Boolean(), b=graphene.Boolean(), c=graphene.Boolean())
 
     def resolve_node(self, info, id):
         validate_user_is_authenticated(info.context.user)
@@ -48,23 +48,41 @@ class Query(graphene.ObjectType):
         
         return Node.objects.all().count()
     
-    def resolve_sync(self, info, id, action, a=None, b=None, c=None):
+    def resolve_sync(self, info, id, action, enforce=False, a=None, b=None, c=None):
+        # action: ['reset' (resets the board to state to all false), 'team' (sync board to team state), 'custom' (pass in ['a','b','c'] to sync state)]
+        # enforce: Bool. If try, pop the balloons that go from false to true. Only avaliable when action is custom
         validate_user_is_authenticated(info.context.user)
         try:
             node = Node.objects.get(id=id)
         except:
             raise Exception("Node with ID does not exist.")
         
-        sync_state = node.state
-        if a != None:
-            sync_state['A'] = a
-        if b != None: 
-            sync_state['B'] = b
-        if c != None:
-            sync_state['C'] = c
+        if action not in ['reset', 'team', 'custom']:
+            raise Exception("Sync action not valid.")
 
-        # TODO! If abc false no message happens.
-        aws.publish(id, action, sync_state)
+        sync_state = {'A': False, 'B': False, 'C': False}
+        if action == 'reset':
+            pass
+
+        elif action == 'custom':
+            if a is None or b is None or c is None:
+                raise Exception("a, b, and c flags must be explicitly defined..")
+            sync_state = {'A': a, 'B': b, 'C': c}
+
+        elif action == 'team':
+            if not node.team:
+                raise Exception("No team to sync with.")
+            if node.team.solves.all():
+                for solve in node.team.solves.all():
+                    sync_state[solve.challenge.balloon] = True
+
+        print(enforce)
+        if action == 'custom' and enforce:
+            aws.publish(id, 'pop', sync_state)
+        else:
+            aws.publish(id, 'sync', sync_state)
+
+        print(sync_state)
         return True
 
 class NodeMutation(graphene.Mutation):

@@ -18,6 +18,8 @@ services:
     environment:
       - DEBUGGER=True
       - APP_KEY="plzchange"
+      - AWS_CRT='/root/certificate.pem.crt'
+      - AWS_KEY='/root/private.pem.key'
 
   hackart-frontend:
     restart: unless-stopped
