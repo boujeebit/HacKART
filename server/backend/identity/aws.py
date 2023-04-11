@@ -25,13 +25,13 @@ def publish(id, action, state):
     raise Exception("Not a valid action.")
   
   publish_msg = {"type": action, "state": state}
-  print("AWS MESSAGE:", publish_msg)
+  # print("AWS MESSAGE:", publish_msg)
 
   publish_url = 'https://%s:%i/topics/hackart/%s?qos=1' % (broker.endpoint, broker.port, node.id)
   publish = requests.request('POST',
     publish_url,
     data=json.dumps(publish_msg),
-    cert=[os.environ.get('AWS_CRT'), os.environ.get('AWS_KEY')])
+    cert=[os.environ.get('AWS_CRT', '/root/certificate.pem.crt'), os.environ.get('AWS_KEY', '/root/private.pem.key')])
   
   if publish.status_code != 200:
     raise Exception("None 200 code from AWS IoT.")
