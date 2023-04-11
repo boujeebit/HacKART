@@ -16,9 +16,13 @@ class NodeType(DjangoObjectType):
     zombie = graphene.Boolean()
 
     def resolve_zombie(self, info):
-        expected = self.heartbeat + timedelta(seconds=(self.internval*5))
-        if timezone.now() > expected:
-            return True
+        print(self.heartbeat, self.heartbeats, self.internval)
+        if self.heartbeat and self.heartbeats and self.internval > 0:
+            expected = self.heartbeat + timedelta(seconds=(self.internval*5))
+            if timezone.now() > expected:
+                return True
+            else:
+                return False
         else:
             return False
         
