@@ -135,6 +135,10 @@
             <td>Interval</td>
             <td>{{node.internval}}</td>
           </tr>
+          <tr>
+            <td>State</td>
+            <td>{{node.state}}</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -250,7 +254,7 @@
             "id": this.$props.id
           }
         },
-        // pollInterval: 5000
+        pollInterval: 5000
       }
     },
     methods: {
@@ -328,4 +332,5 @@ legend.scheduler-border {
     padding:0 10px; /* To give a bit of padding on the left and right */
     border-bottom:none;
 }
+
 </style>

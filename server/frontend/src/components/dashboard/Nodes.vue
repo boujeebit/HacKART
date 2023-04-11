@@ -7,12 +7,12 @@
     <table class="table">
       <thead>
         <tr>
-          <th></th>
-          <th>Name</th>
-          <th>Team</th>
-          <th>Initialized</th>
-          <th>Heartbeat</th>
-          <th style="text-align: right;">Balloons</th>
+          <th style="width: 5%;"></th>
+          <th style="width: 18%;">Name</th>
+          <th style="width: 18%;">Team</th>
+          <th style="width: 22%;">Initialized</th>
+          <th style="width: 22%;">Heartbeat</th>
+          <th style="width: 15%; text-align: right;">Balloons</th>
         </tr>
       </thead>
       <tbody>
@@ -152,5 +152,13 @@ export default {
 .icon-border-danger {
   border-radius: 50%;
   border: 2px solid #ff5555;
+}
+table {
+  table-layout: fixed; /* Ensure all cells have same width */
+}
+td {
+  white-space: nowrap; /* Prevent line breaks within cells */
+  overflow: hidden; /* Hide the overflow content */
+  text-overflow: ellipsis; /* Replace the overflow with dots */
 }
 </style>
