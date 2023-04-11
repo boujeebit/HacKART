@@ -53,17 +53,17 @@
         <p>Last heartbeat board state: </p>
         <code>{{ node.state }}</code>
         </div>
-        <hr>
+      </div>
+        
+      </div>
         <div v-if="syncData.response === true">
+          <hr>
           Sync was successfully acknowledged by the broker. 
         </div>
         <div v-else-if="syncData.response === false">
+          <hr>
           Broker error.
         </div>
-      </div>
-        
-        
-      </div>
     </b-modal>
 
 
