@@ -45,10 +45,17 @@ def sub_cb(topic, msg):
       if msg['state'][x] is True and msg['state'][x] != state[x]:
         if x == 'A':
           r1.value(1)
+          time.sleep(1)
+          r1.value(0)
         if x == 'B':
           r2.value(1)
+          time.sleep(1)
+          r2.value(0)
         if x == 'C':
           r3.value(1)
+          time.sleep(1)
+          r3.value(0)
+
         print(" ↳ Popping:", x)
 
   elif msg['type'] == 'sync':

@@ -18,7 +18,10 @@ class Node(models.Model):
 
 
     def __str__(self) -> str:
-        return self.name
+        if self.team:
+            return "%s (%s)" % (self.name, self.team.name)
+        else:
+            return self.name
 
 class Network(models.Model):
     mac = models.CharField(max_length=17, unique=True, null=False, blank=False)
