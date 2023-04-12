@@ -9,9 +9,9 @@ if boot_failure is True:
 state = {'A': False, 'B': False, 'C': False}
 heartbeat = 0
 
-r1 = machine.Pin(12, machine.Pin.OUT) #A
-r2 = machine.Pin(13, machine.Pin.OUT) #B
-r3 = machine.Pin(15, machine.Pin.OUT) #C
+r1 = machine.Pin(5, machine.Pin.OUT)  #A
+r2 = machine.Pin(4, machine.Pin.OUT)  #B
+r3 = machine.Pin(14, machine.Pin.OUT) #C
 
 # Function to validate local state and MQTT state messages.
 def validate_state(state):
