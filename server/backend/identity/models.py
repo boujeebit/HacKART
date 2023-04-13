@@ -20,6 +20,8 @@ class Integration(models.Model):
 class Log(models.Model):
     code = models.IntegerField(null=False, blank=False)
     message = models.CharField(max_length=128, null=False, blank=False)
+    payload = models.CharField(max_length=1024, null=True, blank=True)
+    
     timestamp = models.DateTimeField(auto_now_add=True)
 
     source = models.CharField(max_length=64, null=True, blank=True)

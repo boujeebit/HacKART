@@ -68,7 +68,7 @@ def hook(request, id=None):
     if payload['team']['type'].lower() == 'create':
       if 'id' in payload['team'] and 'name' in payload['team']:
         try:
-          team = Team(external_id=payload['team']['id'], name=payload['team']['name'], integration=integration)
+          team = Team(external_id=payload['team']['id'], name=payload['team']['name'], payload=payload, integration=integration)
           team.save()
           log = Log(code=200, message="Success.", integration=integration)
           log.save()
